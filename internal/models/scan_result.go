@@ -9,6 +9,13 @@ type ScanResult struct {
 	Server       string
 	Ports        []int
 	TLSVersions  []string
+    URL                string   `json:"url"`
+    Subdomains         []string `json:"subdomains"`
+    CVEs               []string `json:"cves"`
+    XSSVulnerabilities []string
+`json:"xss_vulnerabilities"`
+    SecurityHeaders    []string `json:"security_headers"`
+    // Add more vulnerability types here
 	CipherSuites []string
 	ALPNProtocols []string
 	ESNI         bool
