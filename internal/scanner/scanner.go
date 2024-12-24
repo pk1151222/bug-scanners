@@ -1,38 +1,29 @@
-// internal/scanner/scanner.go
-
 package scanner
 
 import (
-	"crypto/tls"
-	"fmt"
-	"net"
-	"time"
-	"github.com/pk1151222/bug-scanners/internal/models"
+    "fmt"
+    "github.com/pk1151222/bug-scanners/internal/subdomain"
+    "github.com/pk1151222/bug-scanners/pkg/cve_scanner"
+    "github.com/pk1151222/bug-scanners/pkg/security_headers"
+    "github.com/pk1151222/bug-scanners/tlsanalysis"
 )
 
-// डोमेन के लिए SNI बग स्कैन करने का फ़ंक्शन।
-func ScanSNI(domain string) (*models.ScanResult, error) {
-	result := &models.ScanResult{Domain: domain}
+func StartScan(args []string) {
+    target := args[0] // Assuming first argument is the target URL
 
-	// IP पता रिजॉल्व करें
-	ips, err := net.LookupIP(domain)
-	if err != nil {
-		return nil, fmt.Errorf("डोमेन %s के लिए IP रिजॉल्व करने में त्रुटि: %v", domain, err)
-	}
-	result.IP = ips[0].String()
+    // Scan for subdomains
+    subdomains := subdomain.EnumerateSubdomains(target)
+    fmt.Println("Subdomains found:", subdomains)
 
-	// TLS हैंडशेक करने के लिए SNI बग जांचें
-	conn, err := tls.Dial("tcp", domain+":443", &tls.Config{ServerName: domain})
-	if err != nil {
-		return nil, fmt.Errorf("डोमेन %s से कनेक्ट होने में त्रुटि: %v", domain, err)
-	}
-	defer conn.Close()
+    // Scan for CVEs
+    cves := cve_scanner.CheckCVE(target)
+    fmt.Println("CVEs found:", cves)
 
-	state := conn.ConnectionState()
-	result.Server = state.ServerName
+    // Scan for security headers
+    headers := security_headers.AnalyzeHeaders(target)
+    fmt.Println("Security Headers:", headers)
 
-	// अन्य TLS विवरण (Cipher Suites, Versions) जोड़ें
-	// result.TLSVersions, result.CipherSuites, आदि भरें।
-
-	return result, nil
+    // TLS analysis
+    tlsResults := tlsanalysis.CheckTLS(target)
+    fmt.Println("TLS analysis:", tlsResults)
 }
