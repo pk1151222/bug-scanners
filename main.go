@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"github.com/gin-gonic/gin"
+"github.com/pk1151222/bug-scanners/internal/xss_scanner"
 	"github.com/pk1151222/bug-scanners/cmd"
 	"github.com/pk1151222/bug-scanners/internal/models"
 	"github.com/pk1151222/bug-scanners/internal/scanner"
@@ -27,6 +28,15 @@ func main() {
 	// Scan URL route
 	router.GET("/scan/:url", func(c *gin.Context) {
 		url := c.Param("url")
+
+// XSS vulnerability scan
+        xssVulnerabilities, err := xss_scanner.ScanForXSS(url)
+        if err != nil {
+            fmt.Println("Error during XSS scan:", err)
+        }
+        fmt.Println("XSS Vulnerabilities:", xssVulnerabilities)
+
+        // Combine all scan
 
 		// Subdomain enumeration
 		fmt.Println("Starting subdomain enumeration for:", url)
