@@ -13,6 +13,7 @@ import (
 	"github.com/pk1151222/bug-scanners/pkg/cve_scanner"
 	"github.com/pk1151222/bug-scanners/pkg/reporter"
 	"github.com/pk1151222/bug-scanners/pkg/security_headers"
+	"github.com/pk1151222/bug-scanners/internal/xss_scanner"
 	"github.com/pk1151222/bug-scanners/pkg/sql_scanner"
 	"github.com/pk1151222/bug-scanners/pkg/waf_detector"
 )
