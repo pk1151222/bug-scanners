@@ -4,7 +4,7 @@ package subdomain
 
 import (
     "fmt"
-    "your_project/internal/utils"
+    "github.com/pk1151222/bug-scanners/internal/utils"
     "github.com/projectdiscovery/subfinder/v2/pkg/subscraping"
 )
 
