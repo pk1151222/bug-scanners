@@ -1,5 +1,6 @@
 package sql_scanner
 
+
 import (
 	"fmt"
 	"net/http"
