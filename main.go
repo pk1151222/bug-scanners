@@ -11,6 +11,7 @@ import (
 	"github.com/pk1151222/bug-scanners/internal/subdomain"
 	"github.com/pk1151222/bug-scanners/internal/utils"
 	"github.com/pk1151222/bug-scanners/pkg/cve_scanner"
+	"github.com/pk1151222/bug-scanners/pkg/reporter"
 	"github.com/pk1151222/bug-scanners/pkg/security_headers"
 	"github.com/pk1151222/bug-scanners/pkg/sql_scanner"
 	"github.com/pk1151222/bug-scanners/pkg/waf_detector"
@@ -19,6 +20,9 @@ import (
 func main() {
 	// Initialize a Gin router for the web-based interface
 	router := gin.Default()
+
+	// Load HTML templates for dashboard
+	router.LoadHTMLGlob("templates/*")
 
 	// Root route: Welcome message
 	router.GET("/", func(c *gin.Context) {
@@ -68,6 +72,11 @@ func main() {
 
 		// Print results for logging
 		fmt.Println("Scan Result:", scanResult)
+
+		// Generate a PDF report
+		if err := reporter.GeneratePDF(scanResult); err != nil {
+			log.Printf("Failed to generate PDF report: %v", err)
+		}
 
 		// Return JSON response
 		c.JSON(200, gin.H{
