@@ -4,7 +4,7 @@ package main
 
 import (
     "github.com/gin-gonic/gin"
-    "your_project/internal/scanner"
+    "github.com/pk1151222/bug-scanners/internal/scanner"
 )
 
 func main() {
