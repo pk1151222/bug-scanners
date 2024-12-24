@@ -1,21 +1,11 @@
-// internal/subdomain/subdomain_enumerator.go
-
 package subdomain
 
 import (
-	"fmt"
-	"github.com/projectdiscovery/subfinder/v2/pkg/runner"
+    "fmt"
 )
 
-// डोमेन के लिए सबडोमेन खोजने का फ़ंक्शन।
-func EnumerateSubdomains(domain string) ([]string, error) {
-	var subdomains []string
-	options := runner.Options{Domain: domain}
-	subfinderRunner, err := runner.NewRunner(&options)
-	if err != nil {
-		return nil, fmt.Errorf("subfinder रनर बनाने में त्रुटि: %v", err)
-	}
-
-	results := subfinderRunner.RunEnumeration()
-	return results, nil
+func EnumerateSubdomains(target string) []string {
+    // Placeholder for actual subdomain enumeration logic
+    fmt.Println("Scanning subdomains for", target)
+    return []string{"sub1.example.com", "sub2.example.com"}
 }
