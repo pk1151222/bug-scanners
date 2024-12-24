@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+
 	"github.com/gin-gonic/gin"
-"github.com/pk1151222/bug-scanners/internal/xss_scanner"
 	"github.com/pk1151222/bug-scanners/cmd"
 	"github.com/pk1151222/bug-scanners/internal/models"
 	"github.com/pk1151222/bug-scanners/internal/scanner"
@@ -12,63 +12,80 @@ import (
 	"github.com/pk1151222/bug-scanners/internal/utils"
 	"github.com/pk1151222/bug-scanners/pkg/cve_scanner"
 	"github.com/pk1151222/bug-scanners/pkg/security_headers"
+	"github.com/pk1151222/bug-scanners/pkg/sql_scanner"
+	"github.com/pk1151222/bug-scanners/pkg/waf_detector"
 )
 
 func main() {
-	// Initialize a Gin router for a simple web UI
+	// Initialize a Gin router for the web-based interface
 	router := gin.Default()
 
-	// Root route: Basic info
+	// Root route: Welcome message
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "Welcome to the Bug Scanners API. Start scanning by calling /scan endpoint.",
+			"message": "Welcome to the Bug Scanners API. Use /scan/:url to start scanning.",
 		})
 	})
 
-	// Scan URL route
+	// Scan route: Performs comprehensive scanning for a given URL
 	router.GET("/scan/:url", func(c *gin.Context) {
 		url := c.Param("url")
-
-// XSS vulnerability scan
-        xssVulnerabilities, err := xss_scanner.ScanForXSS(url)
-        if err != nil {
-            fmt.Println("Error during XSS scan:", err)
-        }
-        fmt.Println("XSS Vulnerabilities:", xssVulnerabilities)
-
-        // Combine all scan
 
 		// Subdomain enumeration
 		fmt.Println("Starting subdomain enumeration for:", url)
 		subdomains := subdomain.EnumerateSubdomains(url)
-		fmt.Println("Subdomains found:", subdomains)
 
 		// CVE scanning
 		fmt.Println("Starting CVE scanning for:", url)
 		cves := cve_scanner.ScanCVE(url)
-		fmt.Println("CVEs detected:", cves)
 
 		// Security headers analysis
+		fmt.Println("Analyzing security headers for:", url)
 		headers := security_headers.AnalyzeSecurityHeaders(url)
-		fmt.Println("Security Headers:", headers)
 
-		// Scan result model
-		scanResult := models.ScanResult{
-			URL:               url,
-			Subdomains:        subdomains,
-			CVEs:              cves,
-			SecurityHeaders:   headers,
-			HTTPVulnerabilities: []models.Vulnerability{},  // Example for HTTP vulnerabilities
-			SSLVulnerabilities: []models.Vulnerability{},   // Example for SSL vulnerabilities
+		// SQL Injection detection
+		fmt.Println("Scanning for SQL Injection vulnerabilities...")
+		sqlVulnerabilities, err := sql_scanner.ScanForSQLInjection(url)
+		if err != nil {
+			fmt.Println("Error during SQL Injection scan:", err)
 		}
 
-		// Save or process scan result here (can be saved to a database, file, etc.)
-		// For now, print the result
+		// WAF detection
+		fmt.Println("Detecting WAF for:", url)
+		wafStatus := waf_detector.DetectWAF(url)
+
+		// Compile scan results
+		scanResult := models.ScanResult{
+			URL:                 url,
+			Subdomains:          subdomains,
+			CVEs:                cves,
+			SecurityHeaders:     headers,
+			SQLVulnerabilities:  sqlVulnerabilities,
+			WAFStatus:           wafStatus,
+			HTTPVulnerabilities: []models.Vulnerability{}, // Placeholder
+			SSLVulnerabilities:  []models.Vulnerability{}, // Placeholder
+		}
+
+		// Print results for logging
 		fmt.Println("Scan Result:", scanResult)
 
-		// Return the scan result as a JSON response
+		// Return JSON response
 		c.JSON(200, gin.H{
 			"scan_result": scanResult,
+		})
+	})
+
+	// Dashboard route: Simple HTML-based dashboard
+	router.GET("/dashboard", func(c *gin.Context) {
+		c.HTML(200, "dashboard.html", gin.H{
+			"title": "Bug Scanner Dashboard",
+			"features": []string{
+				"Subdomain Enumeration",
+				"CVE Scanning",
+				"Security Header Analysis",
+				"SQL Injection Detection",
+				"WAF Detection",
+			},
 		})
 	})
 
