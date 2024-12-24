@@ -4,7 +4,7 @@ package visualization
 
 import (
     "github.com/go-echarts/go-echarts/charts"
-    "your_project/internal/models"
+    "github.com/pk1151222/bug-scanners/internal/models"
     "os"
 )
 
