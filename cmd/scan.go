@@ -2,7 +2,7 @@ package cmd
 
 import (
     "github.com/spf13/cobra"
-    "github.com/yourusername/bug-scanner/internal/scanner"
+    "github.com/pk1151222/bug-scanners/internal/scanner"
 )
 
 var scanCmd = &cobra.Command{
