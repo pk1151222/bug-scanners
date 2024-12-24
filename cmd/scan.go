@@ -1,22 +1,18 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/spf13/cobra"
-	"bug-scanners/internal/scanner"
+    "github.com/spf13/cobra"
+    "github.com/yourusername/bug-scanner/internal/scanner"
 )
 
 var scanCmd = &cobra.Command{
-	Use:   "scan",
-	Short: "Scan for subdomains and vulnerabilities",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Starting the scan...")
-		// Call your scanning logic here
-		scanner.Scan("example.com")
-	},
+    Use:   "scan",
+    Short: "Run the bug scanner",
+    Run: func(cmd *cobra.Command, args []string) {
+        scanner.StartScan(args)
+    },
 }
 
 func init() {
-	rootCmd.AddCommand(scanCmd)
+    rootCmd.AddCommand(scanCmd)
 }
-
