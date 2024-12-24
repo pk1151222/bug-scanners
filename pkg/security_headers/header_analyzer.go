@@ -1,20 +1,14 @@
 package security_headers
 
 import (
-	"net/http"
-	"fmt"
+    "fmt"
 )
 
-func CheckSecurityHeaders(url string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if _, ok := resp.Header["X-Content-Type-Options"]; !ok {
-		fmt.Println("Missing X-Content-Type-Options header")
-	}
-	// Check for more headers here
-	return nil
+func AnalyzeHeaders(target string) map[string]string {
+    // Placeholder for actual security header checking
+    fmt.Println("Analyzing headers for", target)
+    return map[string]string{
+        "X-Content-Type-Options": "nosniff",
+        "Strict-Transport-Security": "max-age=31536000",
+    }
 }
