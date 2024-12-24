@@ -15,6 +15,8 @@ type ScanResult struct {
     XSSVulnerabilities []string
 `json:"xss_vulnerabilities"`
     SecurityHeaders    []string `json:"security_headers"`
+SQLVulnerabilities []string `json:"sql_vulnerabilities"`
+
     // Add more vulnerability types here
 	CipherSuites []string
 	ALPNProtocols []string
