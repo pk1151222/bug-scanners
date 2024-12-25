@@ -11,7 +11,7 @@ require (
     github.com/stretchr/testify v1.8.4
     golang.org/x/net v0.11.0
     github.com/sirupsen/logrus v1.9.0
-    github.com/dchest/uniuri v1.0.0
+    github.com/dchest/uniuri v1.1.0 // Updated version
     github.com/go-sql-driver/mysql v1.7.0
     github.com/elastic/go-elasticsearch/v7 v7.15.0
     github.com/matryer/xbar v0.0.0-20210113123842-f4ea8ffb93d2
