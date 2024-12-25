@@ -7,7 +7,7 @@ require (
     github.com/projectdiscovery/subfinder/v2 v2.5.5
     github.com/go-echarts/go-echarts v1.6.0
     github.com/nats-io/nats.go v1.14.2
-    github.com/projectdiscovery/nuclei/v2/v2.5.2
+    github.com/projectdiscovery/nuclei/v2 v2.5.2
     github.com/stretchr/testify v1.8.4
     golang.org/x/net v0.11.0
     github.com/sirupsen/logrus v1.9.0
